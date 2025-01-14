@@ -3,6 +3,8 @@ require("dotenv").config();
 const express = require('express')
 const app = express();
 var cookieParser = require('cookie-parser');
+const mongoose = require('mongoose');
+const connectDB = require('./libs/connectDB');
 
 // Routes
 const authRoutes = require('./routes/auth.routes');
@@ -16,6 +18,11 @@ const analyticsRoutes = require('./routes/analytics.routes');
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser())
+
+// Database Connection
+connectDB();
+
+
 
 // app.use('/', router);
 app.use('/api/auth', authRoutes);

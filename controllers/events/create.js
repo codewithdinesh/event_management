@@ -1,5 +1,9 @@
 // Controller to Create a new Event
 
+const Event = require('../../models/event.model');
+const dateParser = require('../../utils/dateParser');
+
+
 const createEvent = async (req, res) => {
     try {
         const { name, description, date, location, capacity } = req.body;
@@ -11,10 +15,14 @@ const createEvent = async (req, res) => {
             return res.status(400).json({ message: 'Please provide all fields' });
         }
 
+        // Check if the date is valid
+        const newDate = dateParser(date);
+
+
         const event = new Event({
             name,
             description,
-            date,
+            date: newDate,
             location,
             capacity,
             organizer: req.user._id

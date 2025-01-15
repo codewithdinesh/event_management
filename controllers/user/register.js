@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken');
 
 const register = async (req, res) => {
     try {
-        const { name, email, password } = req.body;
+        const { name, email, password, isAdmin } = req.body;
 
 
         // Check if all fields are provided
@@ -20,10 +20,12 @@ const register = async (req, res) => {
             return res.status(400).json({ message: 'Email already registered' });
         }
 
+
         const user = new User({
             name,
             email,
-            password
+            password,
+            role: isAdmin ? 'admin' : 'user'
         });
 
         await user.save();
@@ -37,6 +39,7 @@ const register = async (req, res) => {
             id: user._id,
             name: user.name,
             email: user.email,
+            role: user.role,
             token
         });
     } catch (error) {

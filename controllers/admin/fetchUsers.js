@@ -3,8 +3,22 @@ const User = require('../../models/user.model');
 
 
 const getAllUsers = async (req, res) => {
+
+
+
     try {
+
+
+
+
         const { page = 1, limit = 10, search = '' } = req.query;
+
+        // If user is Admin
+        if (req.user.role !== 'admin') {
+            return res.status(403).json({
+                message: 'You are not authorized to access this route'
+            });
+        }
 
         // search query
         const searchQuery = search
@@ -40,3 +54,5 @@ const getAllUsers = async (req, res) => {
         });
     }
 }
+
+module.exports = getAllUsers;

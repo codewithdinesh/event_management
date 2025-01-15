@@ -6,6 +6,8 @@ const getEventById = require("../controllers/events/fetchEvent");
 const { updateEvent, deleteEvent } = require("../controllers/events/updateEvent");
 const registerForEvent = require("../controllers/registration/eventRegistration");
 const cancelRegistration = require("../controllers/registration/cancelRegistration");
+
+const getEventAttendees = require("../controllers/registration/fetchAttendees");
 const app = express.Router();
 
 
@@ -29,6 +31,9 @@ app.post('/:id/register', auth, registerForEvent);
 
 // cancel registration
 app.post('/:id/cancel', auth, cancelRegistration);
+
+// Get all attendees for an event
+app.get('/:id/attendees', getEventAttendees);
 
 
 

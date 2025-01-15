@@ -1,11 +1,22 @@
 
 const Event = require('../../models/event.model');
+const dateParser = require('../../utils/dateParser');
 
 
 
 const updateEvent = async (req, res) => {
 
-    
+    if (!req.body) {
+        return res.status(400).json({ message: 'Please provide event details' });
+    }
+
+    if (!req.params.id) {
+        return res.status(400).json({ message: 'Please provide event id' });
+    }
+
+    const { name, description, date, location, capacity } = req.body;
+
+
     try {
         const event = await Event.findOne({ _id: req.params.id, isDeleted: false });
 
@@ -13,14 +24,19 @@ const updateEvent = async (req, res) => {
             return res.status(404).json({ message: 'Event not found' });
         }
 
+        // parse date
+        const parsedDate = dateParser(date);
+
+
         // Check if user is organizer
         if (event.organizer.toString() !== req.user._id.toString() && req.user.role !== 'admin') {
             return res.status(403).json({ message: 'Not authorized to update event' });
         }
 
-        Object.assign(event, req.body);
+        Object.assign(event, { name, description, date: parsedDate, location, capacity });
         await event.save();
-        res.json(event);
+
+        res.status(200).json(event);
     } catch (error) {
         res.status(500).json({ message: 'Error updating event', error: error.message });
     }

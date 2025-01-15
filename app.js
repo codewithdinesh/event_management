@@ -7,7 +7,7 @@ const mongoose = require('mongoose');
 const connectDB = require('./libs/connectDB');
 
 // Routes
-const authRoutes = require('./routes/auth.routes');
+const userRoutes = require('./routes/user.routes');
 const eventRoutes = require('./routes/event.routes');
 const adminRoutes = require('./routes/admin.routes');
 const analyticsRoutes = require('./routes/analytics.routes');
@@ -25,7 +25,7 @@ connectDB();
 
 
 // app.use('/', router);
-app.use('/api/auth', authRoutes);
+app.use('/api/users', userRoutes);
 app.use('/api/events', eventRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/analytics', analyticsRoutes);
